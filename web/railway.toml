@@ -1,10 +1,8 @@
-# Server Configuration Module
 # https://docs.railway.com/guides/config-as-code
 [build]
 builder = "NIXPACKS"
-buildCommand = "npm install && npm run build"
+nixpacksConfigPath = "nixpacks.toml"
 
 [deploy]
-startCommand = "npm run start"
 healthcheckPath = "/"
 restartPolicyType = "ON_FAILURE"
