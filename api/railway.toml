@@ -4,6 +4,8 @@ builder = "NIXPACKS"
 buildCommand = "(npm ci || npm install) && npx prisma generate && npm run build"
 
 [deploy]
-startCommand = "npx prisma migrate deploy && npx prisma db seed && node dist/main"
+# migrate DB → seed catalog (plain JS, no ts-node) → start API
+startCommand = "npx prisma migrate deploy && node prisma/seed.js && node dist/main.js"
 healthcheckPath = "/api/health"
+healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
