@@ -1,0 +1,13 @@
+# Lisa — online clothes shop
+node_modules/
+.DS_Store
+*.log
+.env
+.env.local
+.env*.local
+dist/
+.next/
+coverage/
+.turbo/
+*.tsbuildinfo
+.vercel

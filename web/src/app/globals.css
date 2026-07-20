@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0c0c0c;
+  --mist: #e8eaee;
+  --paper: #f3f4f6;
+  --mute: #6b7280;
+  --acid: #c8f542;
+  --acid-ink: #1a2200;
+  --line: rgba(12, 12, 12, 0.12);
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ink: var(--ink);
+  --color-mist: var(--mist);
+  --color-paper: var(--paper);
+  --color-mute: var(--mute);
+  --color-acid: var(--acid);
+  --color-acid-ink: var(--acid-ink);
+  --color-line: var(--line);
+  --font-display: var(--font-syne);
+  --font-sans: var(--font-figtree);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-figtree), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--acid);
+  color: var(--acid-ink);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes underline-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-rise {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-rise-delay-1 {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+.animate-rise-delay-2 {
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+.animate-drift {
+  animation: drift 8s ease-out both;
+}
+
+.font-display {
+  font-family: var(--font-syne), sans-serif;
+}
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.product-image {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.group:hover .product-image {
+  transform: scale(1.04);
+}
