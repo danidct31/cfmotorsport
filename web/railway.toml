@@ -1,7 +1,7 @@
-# Used when Root Directory = web
+# IMPORTANT: In Railway → this service → Settings → Root Directory = web
 [build]
 builder = "NIXPACKS"
-buildCommand = "npm ci || npm install && npm run build"
+buildCommand = "(npm ci || npm install) && npm run build"
 
 [deploy]
 startCommand = "npm run start"
