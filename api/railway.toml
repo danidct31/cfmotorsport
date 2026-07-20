@@ -1,8 +1,9 @@
-# https://docs.railway.com/guides/config-as-code
+# Used when Root Directory = api
 [build]
 builder = "NIXPACKS"
-nixpacksConfigPath = "nixpacks.toml"
+buildCommand = "npm ci || npm install && npx prisma generate && npm run build"
 
 [deploy]
+startCommand = "npx prisma migrate deploy && npx prisma db seed && node dist/main"
 healthcheckPath = "/api/health"
 restartPolicyType = "ON_FAILURE"
