@@ -46,11 +46,7 @@ export default async function ShopPage({
               <Link
                 key={cat.label}
                 href={href}
-                className={`px-4 py-2 text-sm tracking-wide transition ${
-                  active
-                    ? "bg-ink text-paper"
-                    : "text-mute hover:bg-mist hover:text-ink"
-                }`}
+                className={`btn-chip ${active ? "is-active" : ""}`}
               >
                 {cat.label}
               </Link>

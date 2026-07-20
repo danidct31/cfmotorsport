@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AtlasPlanet } from "@/components/AtlasPlanet";
 import { Hero } from "@/components/Hero";
 import { ProductGrid } from "@/components/ProductGrid";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -32,7 +33,7 @@ export default async function HomePage() {
       </section>
 
       <section className="relative overflow-hidden bg-ink px-5 py-24 text-paper md:px-8 md:py-32">
-        <div className="absolute -right-20 top-0 h-72 w-72 rounded-full bg-acid/20 blur-3xl" />
+        <div className="absolute -right-20 top-0 h-72 w-72 rounded-full bg-yellow-400/15 blur-3xl" />
         <div className="relative mx-auto max-w-7xl">
           <p className="text-xs uppercase tracking-[0.22em] text-white/50">
             Why Lisa
@@ -48,6 +49,8 @@ export default async function HomePage() {
           </p>
         </div>
       </section>
+
+      <AtlasPlanet />
     </>
   );
 }

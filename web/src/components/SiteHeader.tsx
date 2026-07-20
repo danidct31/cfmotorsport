@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LisaLogo } from "@/components/LisaLogo";
 
 const links = [
   { href: "/shop", label: "Shop" },
@@ -29,12 +30,9 @@ export function SiteHeader({
           ))}
         </nav>
 
-        <Link
-          href="/"
-          className="font-display text-2xl font-bold tracking-tight text-white md:absolute md:left-1/2 md:-translate-x-1/2 md:text-3xl"
-        >
-          Lisa
-        </Link>
+        <div className="md:absolute md:left-1/2 md:-translate-x-1/2">
+          <LisaLogo size="nav" />
+        </div>
 
         <div className="flex items-center gap-5 text-sm tracking-wide text-white/85">
           <Link href="/shop" className="nav-link md:hidden">

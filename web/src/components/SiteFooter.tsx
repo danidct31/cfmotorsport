@@ -1,13 +1,12 @@
 import Link from "next/link";
+import { LisaLogo } from "@/components/LisaLogo";
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-ink text-paper">
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-5 py-16 md:flex-row md:items-end md:justify-between md:px-8">
         <div>
-          <p className="font-display text-5xl font-bold tracking-tight md:text-6xl">
-            Lisa
-          </p>
+          <LisaLogo size="footer" href={null} />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
             Clothes with presence. Cut clean, made to last, designed for the
             people who notice.

@@ -19,11 +19,7 @@ export function ProductActions({ product }: { product: Product }) {
               key={s}
               type="button"
               onClick={() => setSize(s)}
-              className={`min-w-12 border px-3 py-2 text-sm transition ${
-                size === s
-                  ? "border-ink bg-ink text-paper"
-                  : "border-line hover:border-ink"
-              }`}
+              className={`btn-chip ${size === s ? "is-active" : ""}`}
             >
               {s}
             </button>
@@ -37,9 +33,9 @@ export function ProductActions({ product }: { product: Product }) {
           setAdded(true);
           window.setTimeout(() => setAdded(false), 1800);
         }}
-        className="w-full bg-ink px-6 py-4 text-sm font-semibold tracking-wide text-paper transition hover:bg-acid hover:text-acid-ink md:w-auto md:min-w-64"
+        className={`btn btn-ink ${added ? "is-success" : ""}`}
       >
-        {added ? "Added to bag" : "Add to bag"}
+        <span>{added ? "Added to bag" : "Add to bag"}</span>
       </button>
     </div>
   );
