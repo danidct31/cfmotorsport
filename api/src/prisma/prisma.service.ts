@@ -22,7 +22,7 @@ export class PrismaService
     } catch (error) {
       this.connected = false;
       this.logger.warn(
-        'PostgreSQL unavailable — API will serve fallback catalog. Start Postgres or use Railway when ready.',
+        'PostgreSQL unavailable — API will use in-memory fallback until DB is ready.',
       );
       this.logger.debug(String(error));
     }

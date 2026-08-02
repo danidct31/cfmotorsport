@@ -1,5 +1,5 @@
 {
-  "name": "lisa",
+  "name": "cfmotorsport",
   "private": true,
   "engines": {
     "node": ">=20.9.0"
@@ -9,16 +9,10 @@
     "api"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=web",
     "dev:web": "npm run dev --workspace=web",
     "dev:api": "npm run start:dev --workspace=api",
     "build": "npm run build --workspace=api && npm run build --workspace=web",
     "build:web": "npm run build --workspace=web",
-    "build:api": "npm run build --workspace=api",
-    "start:web": "npm run start --workspace=web",
-    "start:api": "npm run start:prod --workspace=api",
-    "db:generate": "npm run prisma:generate --workspace=api",
-    "db:migrate": "npm run prisma:migrate --workspace=api",
-    "db:seed": "npm run prisma:seed --workspace=api"
+    "build:api": "npm run build --workspace=api"
   }
 }

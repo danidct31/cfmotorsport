@@ -1,4 +1,3 @@
-# Lisa — online clothes shop
 node_modules/
 .DS_Store
 *.log
@@ -10,4 +9,4 @@ dist/
 coverage/
 .turbo/
 *.tsbuildinfo
-.vercel
+_assets/

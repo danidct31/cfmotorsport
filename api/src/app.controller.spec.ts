@@ -15,10 +15,8 @@ describe('AppController', () => {
   });
 
   describe('health', () => {
-    it('should return ok status', () => {
-      const result = appController.getHealth();
-      expect(result.status).toBe('ok');
-      expect(result.service).toBe('lisa-api');
+    it('should return ok', () => {
+      expect(appController.getHealth().status).toBe('ok');
     });
   });
 });

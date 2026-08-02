@@ -1,4 +1,4 @@
-# IMPORTANT: In Railway → this service → Settings → Root Directory = api
+# Root Directory on Railway = api
 [build]
 builder = "NIXPACKS"
 buildCommand = "(npm ci || npm install) && npx prisma generate && npm run build"

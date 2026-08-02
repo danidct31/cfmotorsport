@@ -5,7 +5,7 @@ export class AppService {
   getHealth() {
     return {
       status: 'ok',
-      service: 'lisa-api',
+      service: 'cfmotorsport-api',
       timestamp: new Date().toISOString(),
     };
   }

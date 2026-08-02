@@ -1,4 +1,4 @@
-# IMPORTANT: In Railway → this service → Settings → Root Directory = web
+# Root Directory on Railway = web
 [build]
 builder = "NIXPACKS"
 buildCommand = "(npm ci || npm install) && npm run build"

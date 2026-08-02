@@ -7,16 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  name        String
-  description String
-  priceCents  Int
-  category    String
-  imageUrl    String
-  sizes       String[]
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+enum ListKind {
+  PRIMARY
+  WEEKLY
+  TODO
+  DESK
+}
+
+model JobItem {
+  id        String   @id @default(cuid())
+  kind      ListKind
+  text      String
+  checked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([kind])
+}
+
+model JobNote {
+  id        String   @id @default(cuid())
+  parentId  String
+  text      String
+  checked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([parentId])
 }

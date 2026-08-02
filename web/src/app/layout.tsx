@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Figtree, Syne } from "next/font/google";
-import { SiteFooter } from "@/components/SiteFooter";
 import "./globals.css";
 
 const syne = Syne({
@@ -17,11 +16,11 @@ const figtree = Figtree({
 
 export const metadata: Metadata = {
   title: {
-    default: "Lisa — Clothes with presence",
-    template: "%s · Lisa",
+    default: "CF Motorsport",
+    template: "%s · CF Motorsport",
   },
   description:
-    "Lisa is an online clothes shop for sharp coats, soft silks, and essentials made to last.",
+    "CF Motorsport workshop hub — primary jobs, weekly jobs, and office desk.",
 };
 
 export default function RootLayout({
@@ -31,10 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${syne.variable} ${figtree.variable} h-full`}>
-      <body className="min-h-full flex flex-col antialiased">
-        <div className="flex flex-1 flex-col">{children}</div>
-        <SiteFooter />
-      </body>
+      <body className="min-h-full antialiased">{children}</body>
     </html>
   );
 }
