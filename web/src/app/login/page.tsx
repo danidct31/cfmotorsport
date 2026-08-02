@@ -25,8 +25,13 @@ export default function LoginPage() {
         message.includes("NetworkError") ||
         message.includes("fetch")
       ) {
+        const local =
+          typeof window !== "undefined" &&
+          window.location.hostname === "localhost";
         setError(
-          "Cannot reach the API. Start it with: cd api → npm run start:dev",
+          local
+            ? "Cannot reach the API. In a second terminal run: cd api → npm run start"
+            : "Cannot reach the API. On Railway, set web variable NEXT_PUBLIC_API_URL to https://YOUR-API-DOMAIN/api and redeploy web.",
         );
       } else if (message.includes("401") || message.includes("Incorrect")) {
         setError("Incorrect password. Access denied.");

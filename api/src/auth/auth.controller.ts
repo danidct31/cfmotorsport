@@ -68,10 +68,12 @@ export class AuthController {
 
     if (!role) throw new UnauthorizedException('Incorrect password');
 
+    // Cross-subdomain Railway (web + api) needs SameSite=None; Secure
+    const crossSite = Boolean(process.env.CORS_ORIGIN?.startsWith('https://'));
     res.cookie('cf_session', this.cookieValue(role), {
       httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
+      sameSite: crossSite ? 'none' : 'lax',
+      secure: crossSite || process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24 * 30,
     });
 
