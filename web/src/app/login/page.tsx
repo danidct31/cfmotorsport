@@ -16,10 +16,23 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      await api.login(password);
+      await api.login(password.trim());
       router.replace("/");
-    } catch {
-      setError("Incorrect password. Access denied.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "";
+      if (
+        message.includes("Failed to fetch") ||
+        message.includes("NetworkError") ||
+        message.includes("fetch")
+      ) {
+        setError(
+          "Cannot reach the API. Start it with: cd api → npm run start:dev",
+        );
+      } else if (message.includes("401") || message.includes("Incorrect")) {
+        setError("Incorrect password. Access denied.");
+      } else {
+        setError(message || "Incorrect password. Access denied.");
+      }
     } finally {
       setLoading(false);
     }

@@ -56,9 +56,11 @@ export class AuthController {
     @Body() body: { password?: string },
     @Res({ passthrough: true }) res: Response,
   ) {
-    const password = body.password ?? '';
-    const site = process.env.SITE_PASSWORD ?? '';
-    const office = process.env.OFFICE_PASSWORD ?? '';
+    const password = (body.password ?? '').trim();
+    const site = (process.env.SITE_PASSWORD ?? '').trim().replace(/^["']|["']$/g, '');
+    const office = (process.env.OFFICE_PASSWORD ?? '')
+      .trim()
+      .replace(/^["']|["']$/g, '');
 
     let role: 'site' | 'office' | null = null;
     if (office && password === office) role = 'office';

@@ -1,6 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
+import { config as loadEnv } from 'dotenv';
+import { resolve } from 'path';
+
+loadEnv({ path: resolve(process.cwd(), '.env') });
+loadEnv({ path: resolve(process.cwd(), 'api/.env') });
+loadEnv({ path: resolve(__dirname, '../.env') });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

@@ -12,10 +12,6 @@ export default function HomePage() {
         <h1 className="mt-4 font-display text-5xl font-bold tracking-tight md:text-7xl">
           <span className="cf-mark">CF Motorsport</span>
         </h1>
-        <p className="mt-6 text-base leading-relaxed text-white/70 md:text-lg">
-          Primary jobs, weekly rhythm, and office desk — rebuilt in TypeScript
-          for Railway.
-        </p>
       </section>
 
       <section className="panel animate-rise mx-auto mt-8 max-w-2xl p-6 text-left md:p-8">
