@@ -1,4 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
+const TOKEN_KEY = "cf_token";
 
 export type JobItem = {
   id: string;
@@ -7,14 +8,29 @@ export type JobItem = {
   checked: boolean;
 };
 
+function getToken() {
+  if (typeof window === "undefined") return null;
+  return window.localStorage.getItem(TOKEN_KEY);
+}
+
+function setToken(token: string | null) {
+  if (typeof window === "undefined") return;
+  if (token) window.localStorage.setItem(TOKEN_KEY, token);
+  else window.localStorage.removeItem(TOKEN_KEY);
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(init?.headers as Record<string, string> | undefined),
+  };
+  const token = getToken();
+  if (token) headers.Authorization = `Bearer ${token}`;
+
   const res = await fetch(`${API_URL}${path}`, {
     ...init,
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...(init?.headers ?? {}),
-    },
+    headers,
     cache: "no-store",
   });
   if (!res.ok) {
@@ -27,12 +43,25 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 export const api = {
   me: () =>
     request<{ authenticated: boolean; office: boolean }>("/auth/me"),
-  login: (password: string) =>
-    request<{ ok: boolean; office: boolean }>("/auth/login", {
+  login: async (password: string) => {
+    const result = await request<{
+      ok: boolean;
+      office: boolean;
+      token: string;
+    }>("/auth/login", {
       method: "POST",
       body: JSON.stringify({ password }),
-    }),
-  logout: () => request<{ ok: boolean }>("/auth/logout", { method: "POST" }),
+    });
+    setToken(result.token);
+    return result;
+  },
+  logout: async () => {
+    try {
+      await request<{ ok: boolean }>("/auth/logout", { method: "POST" });
+    } finally {
+      setToken(null);
+    }
+  },
   listJobs: (kind: string) => request<JobItem[]>(`/jobs/${kind}`),
   createJob: (kind: string, text: string) =>
     request<JobItem>(`/jobs/${kind}`, {
