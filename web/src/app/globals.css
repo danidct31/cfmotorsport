@@ -169,7 +169,11 @@ body {
   padding: 0.85rem 1rem;
   border: 1px solid var(--yellow);
   background: #000;
-  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.job-row.is-checked {
+  background: #9a3412;
 }
 
 .job-title {

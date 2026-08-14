@@ -114,7 +114,7 @@ export function JobList({
         {visible.map((item) => (
           <div
             key={item.id}
-            className={`job-row ${dueKey(item.dueDate) === selectedDate ? "is-due" : ""}`}
+            className={`job-row ${item.checked ? "is-checked" : ""} ${dueKey(item.dueDate) === selectedDate ? "is-due" : ""}`}
           >
             {detailBase ? (
               <Link

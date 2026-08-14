@@ -51,7 +51,7 @@ export function NoteList({ parentId, title }: { parentId: string; title: string 
 
       <div className="space-y-3">
         {items.map((item) => (
-          <div key={item.id} className="job-row">
+          <div key={item.id} className={`job-row ${item.checked ? "is-checked" : ""}`}>
             <span className="btn btn-primary job-title">
               <span className="line-clamp-2">{item.text}</span>
             </span>
