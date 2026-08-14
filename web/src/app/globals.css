@@ -173,7 +173,7 @@ body {
 }
 
 .job-row.is-checked {
-  background: #1e3a8a;
+  background: #854d0e;
 }
 
 .job-title {
@@ -365,7 +365,7 @@ body {
 .check {
   width: 1.35rem;
   height: 1.35rem;
-  accent-color: #93c5fd;
+  accent-color: #facc15;
   cursor: pointer;
 }
 
