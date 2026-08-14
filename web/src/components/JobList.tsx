@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { JobCalendar } from "@/components/JobCalendar";
+import { PrintJobsControl } from "@/components/JobPrintSheet";
 import { TrashIcon } from "@/components/TrashIcon";
 import { api, type JobItem } from "@/lib/api";
 
@@ -76,6 +77,7 @@ export function JobList({
 
   return (
     <div className="animate-rise space-y-6">
+      <div className="no-print space-y-6">
       {showPlanner && (
         <JobCalendar
           items={items}
@@ -187,6 +189,8 @@ export function JobList({
           </p>
         )}
       </div>
+      </div>
+      <PrintJobsControl jobs={visible} fetchNotes />
     </div>
   );
 }

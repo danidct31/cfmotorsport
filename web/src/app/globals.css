@@ -369,6 +369,107 @@ body {
   cursor: pointer;
 }
 
+.print-sheet {
+  display: none;
+}
+
+.print-job {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #111;
+}
+
+.print-job-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 8.5rem 5.5rem;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.print-job-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.print-job-date {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.print-hours {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.2rem;
+}
+
+.print-hours-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.print-hours-box {
+  display: block;
+  height: 1.7rem;
+  border: 1.5px solid #111;
+}
+
+.print-subs {
+  margin: 0.7rem 0 0 1.1rem;
+  padding: 0;
+}
+
+.print-subs li {
+  margin: 0.25rem 0;
+}
+
+.print-subs-empty {
+  margin: 0.7rem 0 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-sheet {
+    display: block;
+  }
+
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  .shell,
+  main {
+    background: #fff !important;
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cf-mark {
+    background: none;
+    color: #111;
+    -webkit-text-fill-color: #111;
+    animation: none;
+    filter: none;
+  }
+
+  h1 {
+    color: #111;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cf-mark, .animate-rise, .btn:hover, .btn:hover::after { animation: none; transform: none; }
 }

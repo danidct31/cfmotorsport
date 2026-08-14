@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { PrintJobsControl } from "@/components/JobPrintSheet";
 import { TrashIcon } from "@/components/TrashIcon";
 import { api, type JobItem } from "@/lib/api";
 
@@ -30,6 +31,7 @@ export function NoteList({ parentId, title }: { parentId: string; title: string 
 
   return (
     <div className="animate-rise space-y-6">
+      <div className="no-print space-y-6">
       <p className="text-lg text-white/80">
         Job: <span className="cf-mark font-display font-bold">{title}</span>
       </p>
@@ -78,6 +80,17 @@ export function NoteList({ parentId, title }: { parentId: string; title: string 
           </div>
         ))}
       </div>
+      </div>
+      <PrintJobsControl
+        jobs={[
+          {
+            id: parentId,
+            text: title,
+            checked: false,
+            notes: items,
+          },
+        ]}
+      />
     </div>
   );
 }

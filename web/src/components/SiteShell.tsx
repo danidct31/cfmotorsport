@@ -60,8 +60,8 @@ export function SiteShell({
 
   return (
     <div className="shell">
-      <div className="shell-bg" />
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-5 py-6">
+      <div className="shell-bg no-print" />
+      <header className="no-print mx-auto flex max-w-5xl items-center justify-between px-5 py-6">
         <Link href="/" className="relative block h-14 w-40 md:h-16 md:w-52">
           <Image
             src="/cf-logo.svg"
@@ -81,7 +81,7 @@ export function SiteShell({
       </header>
 
       {open && (
-        <div className="fixed inset-0 z-40 bg-black/70" onClick={() => setOpen(false)}>
+        <div className="no-print fixed inset-0 z-40 bg-black/70" onClick={() => setOpen(false)}>
           <nav
             className="panel absolute left-1/2 top-28 w-[min(92vw,22rem)] -translate-x-1/2 p-4"
             onClick={(e) => e.stopPropagation()}
