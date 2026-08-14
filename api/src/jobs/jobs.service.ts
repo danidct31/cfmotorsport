@@ -7,6 +7,45 @@ import { ListKind } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { memoryStore } from './memory.store';
 
+export type JobPatch = {
+  text?: string;
+  checked?: boolean;
+  dueDate?: string | null;
+  priority?: number;
+};
+
+function parseDueDate(value?: string | null): Date | null | undefined {
+  if (value === undefined) return undefined;
+  if (value === null || value === '') return null;
+  const date = new Date(`${value}T12:00:00.000Z`);
+  if (Number.isNaN(date.getTime())) {
+    throw new BadRequestException('dueDate must be YYYY-MM-DD');
+  }
+  return date;
+}
+
+function parsePriority(value?: number): number | undefined {
+  if (value === undefined) return undefined;
+  if (![1, 2, 3].includes(value)) {
+    throw new BadRequestException('priority must be 1, 2, or 3');
+  }
+  return value;
+}
+
+function sortJobs<T extends { priority: number; dueDate: Date | null; createdAt: Date }>(
+  items: T[],
+) {
+  return [...items].sort((a, b) => {
+    if (a.priority !== b.priority) return a.priority - b.priority;
+    if (a.dueDate && b.dueDate) {
+      return a.dueDate.getTime() - b.dueDate.getTime();
+    }
+    if (a.dueDate && !b.dueDate) return -1;
+    if (!a.dueDate && b.dueDate) return 1;
+    return b.createdAt.getTime() - a.createdAt.getTime();
+  });
+}
+
 @Injectable()
 export class JobsService {
   constructor(private readonly prisma: PrismaService) {}
@@ -26,14 +65,10 @@ export class JobsService {
   async list(kindParam: string) {
     const kind = this.kindFromPath(kindParam);
     if (!this.prisma.connected) {
-      return memoryStore.items
-        .filter((i) => i.kind === kind)
-        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      return sortJobs(memoryStore.items.filter((i) => i.kind === kind));
     }
-    return this.prisma.jobItem.findMany({
-      where: { kind },
-      orderBy: { createdAt: 'desc' },
-    });
+    const items = await this.prisma.jobItem.findMany({ where: { kind } });
+    return sortJobs(items);
   }
 
   async create(kindParam: string, text?: string) {
@@ -43,22 +78,30 @@ export class JobsService {
       return memoryStore.createItem(kind, text.trim());
     }
     return this.prisma.jobItem.create({
-      data: { kind, text: text.trim() },
+      data: { kind, text: text.trim(), priority: 3 },
     });
   }
 
-  async update(
-    id: string,
-    data: { text?: string; checked?: boolean },
-  ) {
-    if (data.text === undefined && data.checked === undefined) {
+  async update(id: string, data: JobPatch) {
+    if (
+      data.text === undefined &&
+      data.checked === undefined &&
+      data.dueDate === undefined &&
+      data.priority === undefined
+    ) {
       throw new BadRequestException('Nothing to update');
     }
+
+    const dueDate = parseDueDate(data.dueDate);
+    const priority = parsePriority(data.priority);
+
     if (!this.prisma.connected) {
       const item = memoryStore.items.find((i) => i.id === id);
       if (!item) throw new NotFoundException('Item not found');
       if (data.text !== undefined) item.text = data.text;
       if (data.checked !== undefined) item.checked = data.checked;
+      if (dueDate !== undefined) item.dueDate = dueDate;
+      if (priority !== undefined) item.priority = priority;
       item.updatedAt = new Date();
       return item;
     }
@@ -68,6 +111,8 @@ export class JobsService {
         data: {
           ...(data.text !== undefined ? { text: data.text } : {}),
           ...(data.checked !== undefined ? { checked: data.checked } : {}),
+          ...(dueDate !== undefined ? { dueDate } : {}),
+          ...(priority !== undefined ? { priority } : {}),
         },
       });
     } catch {

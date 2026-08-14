@@ -1,20 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { JobCalendar } from "@/components/JobCalendar";
 import { api, type JobItem } from "@/lib/api";
+
+function dueKey(value?: string | null) {
+  if (!value) return "";
+  return value.slice(0, 10);
+}
 
 export function JobList({
   kind,
   detailBase,
+  showPlanner = false,
 }: {
   kind: "primary" | "weekly" | "todo" | "desk";
   detailBase?: string;
+  showPlanner?: boolean;
 }) {
   const [items, setItems] = useState<JobItem[]>([]);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   async function refresh() {
     setLoading(true);
@@ -32,11 +41,29 @@ export function JobList({
     void refresh();
   }, [kind]);
 
+  const visible = useMemo(() => {
+    if (!selectedDate) return items;
+    return items.filter((item) => dueKey(item.dueDate) === selectedDate);
+  }, [items, selectedDate]);
+
+  async function patch(id: string, data: Partial<JobItem> & { dueDate?: string | null; priority?: number; checked?: boolean }) {
+    setItems((prev) =>
+      prev
+        .map((x) => (x.id === id ? { ...x, ...data } : x))
+        .sort((a, b) => (a.priority ?? 3) - (b.priority ?? 3)),
+    );
+    const updated = await api.updateJob(id, data);
+    setItems((prev) => {
+      const next = prev.map((x) => (x.id === id ? updated : x));
+      return [...next].sort((a, b) => (a.priority ?? 3) - (b.priority ?? 3));
+    });
+  }
+
   async function addItem() {
     if (!text.trim()) return;
     try {
       const created = await api.createJob(kind, text.trim());
-      setItems((prev) => [created, ...prev]);
+      setItems((prev) => [...prev, created].sort((a, b) => (a.priority ?? 3) - (b.priority ?? 3)));
       setText("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to add");
@@ -45,6 +72,14 @@ export function JobList({
 
   return (
     <div className="animate-rise space-y-6">
+      {showPlanner && (
+        <JobCalendar
+          items={items}
+          selectedDate={selectedDate}
+          onSelectDate={setSelectedDate}
+        />
+      )}
+
       <div className="panel flex flex-col gap-3 p-4 sm:flex-row">
         <input
           value={text}
@@ -58,12 +93,25 @@ export function JobList({
         </button>
       </div>
 
+      {selectedDate && showPlanner && (
+        <button
+          type="button"
+          className="btn btn-ghost"
+          onClick={() => setSelectedDate(null)}
+        >
+          <span>Show all jobs</span>
+        </button>
+      )}
+
       {error && <p className="text-sm text-red-300">{error}</p>}
       {loading && <p className="text-mute">Loading…</p>}
 
       <div className="space-y-3">
-        {items.map((item) => (
-          <div key={item.id} className="job-row">
+        {visible.map((item) => (
+          <div
+            key={item.id}
+            className={`job-row ${dueKey(item.dueDate) === selectedDate ? "is-due" : ""}`}
+          >
             {detailBase ? (
               <Link
                 href={`${detailBase}?id=${item.id}&text=${encodeURIComponent(item.text)}`}
@@ -74,17 +122,40 @@ export function JobList({
             ) : (
               <p className="text-left font-semibold">{item.text}</p>
             )}
+
+            {showPlanner && (
+              <>
+                <input
+                  type="date"
+                  className="date-input"
+                  value={dueKey(item.dueDate)}
+                  onChange={(e) =>
+                    void patch(item.id, {
+                      dueDate: e.target.value || null,
+                    })
+                  }
+                  aria-label={`Date for ${item.text}`}
+                />
+                <div className="priority-group" role="group" aria-label="Priority">
+                  {[1, 2, 3].map((level) => (
+                    <button
+                      key={level}
+                      type="button"
+                      className={`priority-btn prio-${level} ${(item.priority ?? 3) === level ? "is-active" : ""}`}
+                      onClick={() => void patch(item.id, { priority: level })}
+                    >
+                      {level}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
             <input
               type="checkbox"
               className="check"
               checked={item.checked}
-              onChange={async (e) => {
-                const checked = e.target.checked;
-                setItems((prev) =>
-                  prev.map((x) => (x.id === item.id ? { ...x, checked } : x)),
-                );
-                await api.updateJob(item.id, { checked });
-              }}
+              onChange={(e) => void patch(item.id, { checked: e.target.checked })}
             />
             <button
               type="button"
@@ -98,8 +169,12 @@ export function JobList({
             </button>
           </div>
         ))}
-        {!loading && items.length === 0 && (
-          <p className="text-mute">No jobs yet — add the first one.</p>
+        {!loading && visible.length === 0 && (
+          <p className="text-mute">
+            {selectedDate
+              ? "No jobs on this date."
+              : "No jobs yet — add the first one."}
+          </p>
         )}
       </div>
     </div>

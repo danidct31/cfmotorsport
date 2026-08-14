@@ -26,7 +26,13 @@ export class JobsController {
   @Patch('jobs/item/:id')
   update(
     @Param('id') id: string,
-    @Body() body: { text?: string; checked?: boolean },
+    @Body()
+    body: {
+      text?: string;
+      checked?: boolean;
+      dueDate?: string | null;
+      priority?: number;
+    },
   ) {
     return this.jobs.update(id, body);
   }

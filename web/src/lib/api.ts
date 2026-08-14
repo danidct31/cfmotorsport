@@ -6,6 +6,8 @@ export type JobItem = {
   kind?: string;
   text: string;
   checked: boolean;
+  dueDate?: string | null;
+  priority?: number;
 };
 
 function getToken() {
@@ -68,7 +70,15 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ text }),
     }),
-  updateJob: (id: string, data: { text?: string; checked?: boolean }) =>
+  updateJob: (
+    id: string,
+    data: {
+      text?: string;
+      checked?: boolean;
+      dueDate?: string | null;
+      priority?: number;
+    },
+  ) =>
     request<JobItem>(`/jobs/item/${id}`, {
       method: "PATCH",
       body: JSON.stringify(data),

@@ -6,6 +6,8 @@ export type MemItem = {
   kind: ListKind;
   text: string;
   checked: boolean;
+  dueDate: Date | null;
+  priority: number;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -30,6 +32,8 @@ export class MemoryStore {
       kind,
       text,
       checked: false,
+      dueDate: null,
+      priority: 3,
       createdAt: now,
       updatedAt: now,
     };

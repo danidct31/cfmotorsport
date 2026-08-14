@@ -15,14 +15,17 @@ enum ListKind {
 }
 
 model JobItem {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   kind      ListKind
   text      String
-  checked   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  checked   Boolean   @default(false)
+  dueDate   DateTime?
+  priority  Int       @default(3)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   @@index([kind])
+  @@index([kind, priority])
 }
 
 model JobNote {

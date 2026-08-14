@@ -6,7 +6,7 @@ import { SiteShell } from "@/components/SiteShell";
 export default function JobsToBeDonePage() {
   return (
     <SiteShell title="Jobs to be done">
-      <JobList kind="todo" detailBase="/todo-job" />
+      <JobList kind="todo" detailBase="/todo-job" showPlanner />
     </SiteShell>
   );
 }
