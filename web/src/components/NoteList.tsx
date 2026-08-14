@@ -80,17 +80,19 @@ export function NoteList({
       <div className="space-y-3">
         {items.map((item) => (
           <div key={item.id} className={`job-row ${item.checked ? "is-checked" : ""}`}>
-            <span className="btn btn-primary job-title">
-              <span className="line-clamp-2">{item.text}</span>
-            </span>
-
-            <div className="job-actions">
+            <div className="job-main">
               <input
                 type="checkbox"
                 className="check"
                 checked={item.checked}
                 onChange={(e) => void patch(item.id, { checked: e.target.checked })}
               />
+              <span className="btn btn-primary job-title">
+                <span className="line-clamp-2">{item.text}</span>
+              </span>
+            </div>
+
+            <div className="job-actions">
               <button
                 type="button"
                 className="btn-trash"

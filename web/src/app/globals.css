@@ -173,10 +173,19 @@ body {
 }
 
 .job-row.is-checked {
-  background: #854d0e;
+  background: rgba(250, 204, 21, 0.12);
+}
+
+.job-main {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
 }
 
 .job-title {
+  flex: 1;
+  min-width: 0;
   width: 100%;
   justify-self: stretch;
   text-align: left;

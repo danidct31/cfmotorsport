@@ -118,18 +118,26 @@ export function JobList({
             key={item.id}
             className={`job-row ${item.checked ? "is-checked" : ""} ${dueKey(item.dueDate) === selectedDate ? "is-due" : ""}`}
           >
-            {detailBase ? (
-              <Link
-                href={`${detailBase}?id=${item.id}&text=${encodeURIComponent(item.text)}`}
-                className="btn btn-primary job-title"
-              >
-                <span className="line-clamp-2">{item.text}</span>
-              </Link>
-            ) : (
-              <span className="btn btn-primary job-title">
-                <span className="line-clamp-2">{item.text}</span>
-              </span>
-            )}
+            <div className="job-main">
+              <input
+                type="checkbox"
+                className="check"
+                checked={item.checked}
+                onChange={(e) => void patch(item.id, { checked: e.target.checked })}
+              />
+              {detailBase ? (
+                <Link
+                  href={`${detailBase}?id=${item.id}&text=${encodeURIComponent(item.text)}`}
+                  className="btn btn-primary job-title"
+                >
+                  <span className="line-clamp-2">{item.text}</span>
+                </Link>
+              ) : (
+                <span className="btn btn-primary job-title">
+                  <span className="line-clamp-2">{item.text}</span>
+                </span>
+              )}
+            </div>
 
             {showPlanner && (
               <input
@@ -161,12 +169,6 @@ export function JobList({
                 </div>
               )}
 
-              <input
-                type="checkbox"
-                className="check"
-                checked={item.checked}
-                onChange={(e) => void patch(item.id, { checked: e.target.checked })}
-              />
               <button
                 type="button"
                 className="btn-trash"
