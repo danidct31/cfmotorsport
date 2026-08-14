@@ -163,8 +163,8 @@ body {
 
 .job-row {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.75rem;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
   align-items: center;
   padding: 0.85rem 1rem;
   border: 1px solid var(--line);
@@ -172,9 +172,30 @@ body {
   transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+.job-title {
+  width: 100%;
+  justify-self: stretch;
+  text-align: left;
+}
+
+.job-date {
+  width: 100%;
+}
+
+.job-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
 @media (min-width: 900px) {
   .job-row {
-    grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .job-date {
+    width: auto;
   }
 }
 

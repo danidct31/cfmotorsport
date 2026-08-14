@@ -140,12 +140,12 @@ export function JobList({
             {detailBase ? (
               <Link
                 href={`${detailBase}?id=${item.id}&text=${encodeURIComponent(item.text)}`}
-                className="btn btn-primary justify-self-stretch text-left"
+                className="btn btn-primary job-title"
               >
                 <span className="line-clamp-2">{item.text}</span>
               </Link>
             ) : (
-              <span className="btn btn-primary justify-self-stretch text-left">
+              <span className="btn btn-primary job-title">
                 <span className="line-clamp-2">{item.text}</span>
               </span>
             )}
@@ -153,7 +153,7 @@ export function JobList({
             {showPlanner && (
               <input
                 type="date"
-                className="date-input"
+                className="date-input job-date"
                 value={dueKey(item.dueDate)}
                 onChange={(e) =>
                   void patch(item.id, {
@@ -164,38 +164,40 @@ export function JobList({
               />
             )}
 
-            {usePriority && (
-              <div className="priority-group" role="group" aria-label="Priority">
-                {[1, 2, 3].map((level) => (
-                  <button
-                    key={level}
-                    type="button"
-                    className={`priority-btn prio-${level} ${(item.priority ?? 3) === level ? "is-active" : ""}`}
-                    onClick={() => void patch(item.id, { priority: level })}
-                  >
-                    {level}
-                  </button>
-                ))}
-              </div>
-            )}
+            <div className="job-actions">
+              {usePriority && (
+                <div className="priority-group" role="group" aria-label="Priority">
+                  {[1, 2, 3].map((level) => (
+                    <button
+                      key={level}
+                      type="button"
+                      className={`priority-btn prio-${level} ${(item.priority ?? 3) === level ? "is-active" : ""}`}
+                      onClick={() => void patch(item.id, { priority: level })}
+                    >
+                      {level}
+                    </button>
+                  ))}
+                </div>
+              )}
 
-            <input
-              type="checkbox"
-              className="check"
-              checked={item.checked}
-              onChange={(e) => void patch(item.id, { checked: e.target.checked })}
-            />
-            <button
-              type="button"
-              className="btn-trash"
-              aria-label={`Delete ${item.text}`}
-              onClick={async () => {
-                await api.deleteJob(item.id);
-                setItems((prev) => prev.filter((x) => x.id !== item.id));
-              }}
-            >
-              <TrashIcon />
-            </button>
+              <input
+                type="checkbox"
+                className="check"
+                checked={item.checked}
+                onChange={(e) => void patch(item.id, { checked: e.target.checked })}
+              />
+              <button
+                type="button"
+                className="btn-trash"
+                aria-label={`Delete ${item.text}`}
+                onClick={async () => {
+                  await api.deleteJob(item.id);
+                  setItems((prev) => prev.filter((x) => x.id !== item.id));
+                }}
+              >
+                <TrashIcon />
+              </button>
+            </div>
           </div>
         ))}
         {!loading && visible.length === 0 && (
