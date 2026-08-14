@@ -1,11 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PrintJobsControl } from "@/components/JobPrintSheet";
 import { TrashIcon } from "@/components/TrashIcon";
 import { api, type JobItem } from "@/lib/api";
 
-export function NoteList({ parentId, title }: { parentId: string; title: string }) {
+export function NoteList({
+  parentId,
+  title,
+  backHref,
+}: {
+  parentId: string;
+  title: string;
+  backHref: string;
+}) {
   const [items, setItems] = useState<JobItem[]>([]);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
@@ -32,9 +41,14 @@ export function NoteList({ parentId, title }: { parentId: string; title: string 
   return (
     <div className="animate-rise space-y-6">
       <div className="no-print space-y-6">
-      <p className="text-lg text-white/80">
-        Job: <span className="cf-mark font-display font-bold">{title}</span>
-      </p>
+      <div className="flex items-center gap-3">
+        <Link href={backHref} className="btn btn-ghost shrink-0">
+          <span>Back</span>
+        </Link>
+        <p className="text-lg text-white/80">
+          Job: <span className="cf-mark font-display font-bold">{title}</span>
+        </p>
+      </div>
 
       <div className="panel flex flex-col gap-3 p-4 sm:flex-row">
         <input

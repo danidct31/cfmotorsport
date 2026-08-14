@@ -14,7 +14,7 @@ function JobDetailInner() {
     return <p className="text-mute">Missing job id.</p>;
   }
 
-  return <NoteList parentId={id} title={text} />;
+  return <NoteList parentId={id} title={text} backHref="/primary-jobs" />;
 }
 
 export default function JobDetailPage() {

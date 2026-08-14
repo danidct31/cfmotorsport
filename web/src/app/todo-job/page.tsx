@@ -14,7 +14,7 @@ function TodoDetailInner() {
     return <p className="text-mute">Missing job id.</p>;
   }
 
-  return <NoteList parentId={id} title={text} />;
+  return <NoteList parentId={id} title={text} backHref="/jobs-to-be-done" />;
 }
 
 export default function TodoJobPage() {
