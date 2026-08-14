@@ -47,6 +47,7 @@ export function JobList({
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const usePriority = showPlanner || showPriority;
 
   async function refresh() {
