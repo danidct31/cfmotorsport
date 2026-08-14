@@ -205,4 +205,27 @@ export class JobsService {
       throw new NotFoundException('Note not found');
     }
   }
+
+  async exportAll() {
+    if (!this.prisma.connected) {
+      return {
+        exportedAt: new Date().toISOString(),
+        source: 'memory' as const,
+        jobs: memoryStore.items,
+        notes: memoryStore.notes,
+      };
+    }
+    const [jobs, notes] = await Promise.all([
+      this.prisma.jobItem.findMany({
+        orderBy: [{ kind: 'asc' }, { createdAt: 'asc' }],
+      }),
+      this.prisma.jobNote.findMany({ orderBy: { createdAt: 'asc' } }),
+    ]);
+    return {
+      exportedAt: new Date().toISOString(),
+      source: 'postgres' as const,
+      jobs,
+      notes,
+    };
+  }
 }

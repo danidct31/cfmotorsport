@@ -53,6 +53,7 @@ Create 3 services from this repo:
    - `DATABASE_URL` = `${{Postgres.DATABASE_URL}}`
    - `CORS_ORIGIN` = web URL
    - `SITE_PASSWORD`, `OFFICE_PASSWORD`, `SESSION_SECRET`
+   - Backup email: `BACKUP_EMAIL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `BACKUP_SECRET`
    - `NIXPACKS_NODE_VERSION=20`
 3. **web** — Root Directory `web`
    - `NEXT_PUBLIC_API_URL` = `https://YOUR-API-DOMAIN/api`
