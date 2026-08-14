@@ -10,20 +10,44 @@ function dueKey(value?: string | null) {
   return value.slice(0, 10);
 }
 
+function TrashIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+    </svg>
+  );
+}
+
 export function JobList({
   kind,
   detailBase,
   showPlanner = false,
+  showPriority = false,
 }: {
   kind: "primary" | "weekly" | "todo" | "desk";
   detailBase?: string;
   showPlanner?: boolean;
+  showPriority?: boolean;
 }) {
   const [items, setItems] = useState<JobItem[]>([]);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const usePriority = showPlanner || showPriority;
 
   async function refresh() {
     setLoading(true);
@@ -120,35 +144,38 @@ export function JobList({
                 <span className="line-clamp-2">{item.text}</span>
               </Link>
             ) : (
-              <p className="text-left font-semibold">{item.text}</p>
+              <span className="btn btn-primary justify-self-stretch text-left">
+                <span className="line-clamp-2">{item.text}</span>
+              </span>
             )}
 
             {showPlanner && (
-              <>
-                <input
-                  type="date"
-                  className="date-input"
-                  value={dueKey(item.dueDate)}
-                  onChange={(e) =>
-                    void patch(item.id, {
-                      dueDate: e.target.value || null,
-                    })
-                  }
-                  aria-label={`Date for ${item.text}`}
-                />
-                <div className="priority-group" role="group" aria-label="Priority">
-                  {[1, 2, 3].map((level) => (
-                    <button
-                      key={level}
-                      type="button"
-                      className={`priority-btn prio-${level} ${(item.priority ?? 3) === level ? "is-active" : ""}`}
-                      onClick={() => void patch(item.id, { priority: level })}
-                    >
-                      {level}
-                    </button>
-                  ))}
-                </div>
-              </>
+              <input
+                type="date"
+                className="date-input"
+                value={dueKey(item.dueDate)}
+                onChange={(e) =>
+                  void patch(item.id, {
+                    dueDate: e.target.value || null,
+                  })
+                }
+                aria-label={`Date for ${item.text}`}
+              />
+            )}
+
+            {usePriority && (
+              <div className="priority-group" role="group" aria-label="Priority">
+                {[1, 2, 3].map((level) => (
+                  <button
+                    key={level}
+                    type="button"
+                    className={`priority-btn prio-${level} ${(item.priority ?? 3) === level ? "is-active" : ""}`}
+                    onClick={() => void patch(item.id, { priority: level })}
+                  >
+                    {level}
+                  </button>
+                ))}
+              </div>
             )}
 
             <input
@@ -159,13 +186,14 @@ export function JobList({
             />
             <button
               type="button"
-              className="btn btn-danger"
+              className="btn-trash"
+              aria-label={`Delete ${item.text}`}
               onClick={async () => {
                 await api.deleteJob(item.id);
                 setItems((prev) => prev.filter((x) => x.id !== item.id));
               }}
             >
-              <span>Delete</span>
+              <TrashIcon />
             </button>
           </div>
         ))}

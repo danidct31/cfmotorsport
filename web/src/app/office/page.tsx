@@ -64,7 +64,7 @@ export default function OfficePage() {
 
   return (
     <SiteShell title="Office">
-      <JobList kind="desk" />
+      <JobList kind="desk" showPriority />
     </SiteShell>
   );
 }
