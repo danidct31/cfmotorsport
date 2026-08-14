@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Headers,
   Post,
   UnauthorizedException,
@@ -9,6 +10,11 @@ import { BackupService } from './backup.service';
 @Controller('backup')
 export class BackupController {
   constructor(private readonly backup: BackupService) {}
+
+  @Get()
+  snapshot() {
+    return this.backup.snapshot();
+  }
 
   @Post('send')
   send(@Headers('x-backup-secret') secret?: string) {

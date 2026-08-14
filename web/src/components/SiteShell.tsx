@@ -103,6 +103,18 @@ export function SiteShell({
               <li>
                 <button
                   type="button"
+                  className="btn btn-ghost w-full"
+                  onClick={async () => {
+                    await api.downloadBackup();
+                    setOpen(false);
+                  }}
+                >
+                  <span>Download backup</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
                   className="btn btn-danger w-full"
                   onClick={async () => {
                     await api.logout();

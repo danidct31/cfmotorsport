@@ -98,4 +98,22 @@ export const api = {
     }),
   deleteNote: (id: string) =>
     request<{ ok: boolean }>(`/notes/item/${id}`, { method: "DELETE" }),
+  downloadBackup: async () => {
+    const snapshot = await request<{
+      exportedAt: string;
+      jobs: unknown[];
+      notes: unknown[];
+    }>("/backup");
+    const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `cfmotorsport-backup-${snapshot.exportedAt.slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  },
 };

@@ -11,6 +11,10 @@ export class BackupService {
 
   constructor(private readonly jobs: JobsService) {}
 
+  async snapshot() {
+    return this.jobs.exportAll();
+  }
+
   @Cron('0 8 1 * *')
   async monthly() {
     this.logger.log('Starting monthly database backup email');

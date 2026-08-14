@@ -1,6 +1,7 @@
 "use client";
 
 import { SiteShell } from "@/components/SiteShell";
+import { api } from "@/lib/api";
 
 export default function HomePage() {
   return (
@@ -38,6 +39,16 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      <div className="mx-auto mt-8 max-w-2xl">
+        <button
+          type="button"
+          className="btn btn-primary w-full"
+          onClick={() => void api.downloadBackup()}
+        >
+          <span>Download backup</span>
+        </button>
+      </div>
     </SiteShell>
   );
 }
