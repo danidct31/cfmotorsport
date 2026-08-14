@@ -199,6 +199,10 @@ body {
   }
 }
 
+.job-row.is-checked {
+  background: rgba(249, 115, 22, 0.18);
+}
+
 .job-row.is-due {
   border-color: rgba(250, 204, 21, 0.85);
   box-shadow: 0 0 18px rgba(250, 204, 21, 0.18);
