@@ -42,8 +42,20 @@ export function NoteList({
     <div className="animate-rise space-y-6">
       <div className="no-print space-y-6">
       <div className="flex items-center gap-3">
-        <Link href={backHref} className="btn btn-ghost shrink-0">
-          <span>Back</span>
+        <Link href={backHref} className="back-arrow" aria-label="Back">
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
         </Link>
         <p className="text-lg text-white/80">
           Job: <span className="cf-mark font-display font-bold">{title}</span>

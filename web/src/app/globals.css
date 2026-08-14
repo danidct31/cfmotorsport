@@ -362,6 +362,20 @@ body {
   transform: translateY(1px) scale(0.96);
 }
 
+.back-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.back-arrow:hover {
+  color: var(--yellow);
+}
+
 .check {
   width: 1.35rem;
   height: 1.35rem;
