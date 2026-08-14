@@ -167,8 +167,8 @@ body {
   gap: 0.65rem;
   align-items: center;
   padding: 0.85rem 1rem;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--yellow);
+  background: #000;
   transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -191,6 +191,10 @@ body {
 
 @media (min-width: 900px) {
   .job-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .job-row:has(.job-date) {
     grid-template-columns: minmax(0, 1fr) auto auto;
   }
 
@@ -199,12 +203,7 @@ body {
   }
 }
 
-.job-row.is-checked {
-  background: rgba(249, 115, 22, 0.18);
-}
-
 .job-row.is-due {
-  border-color: rgba(250, 204, 21, 0.85);
   box-shadow: 0 0 18px rgba(250, 204, 21, 0.18);
 }
 
@@ -330,9 +329,8 @@ body {
 }
 
 .job-row:hover {
-  border-color: rgba(250, 204, 21, 0.55);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25), 0 0 18px rgba(250, 204, 21, 0.18);
 }
 
 .btn-trash {

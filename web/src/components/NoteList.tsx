@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { TrashIcon } from "@/components/TrashIcon";
 import { api, type JobItem } from "@/lib/api";
 
 export function NoteList({ parentId, title }: { parentId: string; title: string }) {
@@ -20,6 +21,11 @@ export function NoteList({ parentId, title }: { parentId: string; title: string 
     const created = await api.createNote(parentId, text.trim());
     setItems((prev) => [created, ...prev]);
     setText("");
+  }
+
+  async function patch(id: string, data: { checked: boolean }) {
+    setItems((prev) => prev.map((x) => (x.id === id ? { ...x, ...data } : x)));
+    await api.updateNote(id, data);
   }
 
   return (
@@ -46,29 +52,29 @@ export function NoteList({ parentId, title }: { parentId: string; title: string 
       <div className="space-y-3">
         {items.map((item) => (
           <div key={item.id} className="job-row">
-            <p className="text-left font-semibold whitespace-pre-wrap">{item.text}</p>
-            <input
-              type="checkbox"
-              className="check"
-              checked={item.checked}
-              onChange={async (e) => {
-                const checked = e.target.checked;
-                setItems((prev) =>
-                  prev.map((x) => (x.id === item.id ? { ...x, checked } : x)),
-                );
-                await api.updateNote(item.id, { checked });
-              }}
-            />
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={async () => {
-                await api.deleteNote(item.id);
-                setItems((prev) => prev.filter((x) => x.id !== item.id));
-              }}
-            >
-              <span>Delete</span>
-            </button>
+            <span className="btn btn-primary job-title">
+              <span className="line-clamp-2">{item.text}</span>
+            </span>
+
+            <div className="job-actions">
+              <input
+                type="checkbox"
+                className="check"
+                checked={item.checked}
+                onChange={(e) => void patch(item.id, { checked: e.target.checked })}
+              />
+              <button
+                type="button"
+                className="btn-trash"
+                aria-label={`Delete ${item.text}`}
+                onClick={async () => {
+                  await api.deleteNote(item.id);
+                  setItems((prev) => prev.filter((x) => x.id !== item.id));
+                }}
+              >
+                <TrashIcon />
+              </button>
+            </div>
           </div>
         ))}
       </div>
